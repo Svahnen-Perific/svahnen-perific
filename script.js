@@ -41,7 +41,6 @@ let changeValue = (event) => {
 let report = (event) => {
     event = event || window.event
     let cards = event.target.parentElement.parentElement.children[1].children[0].children[1].children[0].value
-    let folds
-    let devices
-    console.log(event.target.parentElement.parentElement)
+    let folds = event.target.parentElement.parentElement.children[1].children[1].children[1].children[0].value
+    let devices = event.target.parentElement.parentElement.children[1].children[2].children[1].children[0].value
 }
