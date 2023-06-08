@@ -18,6 +18,27 @@ let addRow = () => {
     let main = document.getElementsByTagName("main")[0]
     let innerHTML = document.getElementsByClassName("report_form")[0].innerHTML
     main.appendChild(document.createElement("div")).innerHTML = innerHTML
+}
 
+let changeValue = (event) => {
+    event = event || window.event
+    let input = event.target.parentElement.children[0]
+    let direction = event.target.innerText
+    if (direction == "+") {
+        if (parseInt(input.value)) {
+            input.value = parseInt(input.value) + 1
+        } else {
+            input.value = 1
+        }
+    }
+    else if (direction == "-") {
+        if (input.value -= 1) { } else {
+            input.value = 0
+        }
+    }
+}
 
+let report = (event) => {
+    event = event || window.event
+    console.log(event.target.parentElement.parentElement.children[1].children[0].children[1].children[0].value)
 }
