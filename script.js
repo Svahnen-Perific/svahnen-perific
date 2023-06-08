@@ -12,3 +12,12 @@ let postData = (email, serie, value) => {
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
     xhr.send()
 }
+
+
+let addRow = () => {
+    let main = document.getElementsByTagName("main")[0]
+    let innerHTML = document.getElementsByClassName("report_form")[0].innerHTML
+    main.appendChild(document.createElement("div")).innerHTML = innerHTML
+
+
+}
