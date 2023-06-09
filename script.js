@@ -1,7 +1,16 @@
 let getData = (email, serie) => {
+    let savedData = "test"
+    // fetch and save data in savedData
     fetch("https://pushdata.io/" + email + "/" + serie)
         .then(res => res.json())
-        .then(data => console.log(data));
+        .then(data => savedData = data)
+        .then(() => returnData(savedData))
+
+    console.log("https://pushdata.io/" + email + "/" + serie)
+}
+
+let returnData = (data) => {
+    console.log(data.points.length)
 }
 
 let postData = (email, serie, value) => {
@@ -52,6 +61,9 @@ let report = (event) => {
     postData(email, "devices", devices)
 }
 
-let showData = () => {
-    console.log("showData")
+let getDataButtonHandler = (event) => {
+    event = event || window.event
+    let email = event.target.parentElement.children[0].value
+    console.log(email)
+    getData(email, "cards")
 }
