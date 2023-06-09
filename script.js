@@ -4,13 +4,18 @@ let getData = (email, serie) => {
     fetch("https://pushdata.io/" + email + "/" + serie)
         .then(res => res.json())
         .then(data => savedData = data)
-        .then(() => returnData(savedData))
+        .then(() => returnData(savedData, serie))
 
     console.log("https://pushdata.io/" + email + "/" + serie)
 }
 
-let returnData = (data) => {
-    console.log(data.points.length)
+let returnData = (data, serie) => {
+    console.log(serie)
+    let results = document.getElementById("result")
+    for (let i = 0; i < data.points.length; i++) {
+        console.log(data.points[i].time, data.points[i].value)
+        result.innerHTML += "<p>" + serie + "</p>" + "<p>" + data.points[i].time + " " + data.points[i].value + "</p>"
+    }
 }
 
 let postData = (email, serie, value) => {
@@ -66,4 +71,7 @@ let getDataButtonHandler = (event) => {
     let email = event.target.parentElement.children[0].value
     console.log(email)
     getData(email, "cards")
+    getData(email, "folds")
+    getData(email, "devices")
+
 }
