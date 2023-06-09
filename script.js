@@ -51,3 +51,7 @@ let report = (event) => {
     postData(email, "folds", folds)
     postData(email, "devices", devices)
 }
+
+let showData = () => {
+    console.log("showData")
+}
