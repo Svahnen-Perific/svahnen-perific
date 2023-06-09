@@ -43,4 +43,11 @@ let report = (event) => {
     let cards = event.target.parentElement.parentElement.children[1].children[0].children[1].children[0].value
     let folds = event.target.parentElement.parentElement.children[1].children[1].children[1].children[0].value
     let devices = event.target.parentElement.parentElement.children[1].children[2].children[1].children[0].value
+    let email = event.target.parentElement.parentElement.children[0].value
+
+    console.log(cards, folds, devices, email)
+
+    postData(email, "cards", cards)
+    postData(email, "folds", folds)
+    postData(email, "devices", devices)
 }
