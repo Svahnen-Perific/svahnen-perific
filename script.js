@@ -1,3 +1,6 @@
+
+
+
 let getData = (email, serie) => {
     let savedData = "test"
     // fetch and save data in savedData
@@ -19,12 +22,22 @@ let returnData = (data, serie) => {
 }
 
 let postData = (email, serie, value) => {
+    let modal = document.getElementById("report_status")
     var url = "https://pushdata.io/" + email + "/" + serie + "/" + value
     console.log(url)
     var xhr = new XMLHttpRequest()
     xhr.open("POST", url, true)
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded")
     xhr.send()
+
+    xhr.onload = function () {
+        console.log(this)
+        if (this.status == 201) {
+            modal.innerHTML += "<p>" + serie + ": sparat</p>"
+        } else {
+            modal.innerHTML += "<p>" + serie + ": misslyckades</p>"
+        }
+    }
 }
 
 
@@ -53,6 +66,8 @@ let changeValue = (event) => {
 }
 
 let report = (event) => {
+    modal = document.getElementById("report_status")
+    modal.innerHTML = "" // clear modal
     event = event || window.event
     let cards = event.target.parentElement.parentElement.children[1].children[0].children[1].children[0].value
     let folds = event.target.parentElement.parentElement.children[1].children[1].children[1].children[0].value
@@ -64,6 +79,7 @@ let report = (event) => {
     postData(email, "cards", cards)
     postData(email, "folds", folds)
     postData(email, "devices", devices)
+
 }
 
 let getDataButtonHandler = (event) => {
