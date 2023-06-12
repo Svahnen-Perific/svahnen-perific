@@ -17,7 +17,7 @@ let returnData = (data, serie) => {
     let results = document.getElementById("result")
     for (let i = 0; i < data.points.length; i++) {
         console.log(data.points[i].time, data.points[i].value)
-        result.innerHTML += "<p>" + serie + "</p>" + "<p>" + data.points[i].time + " " + data.points[i].value + "</p>"
+        results.innerHTML += "<p>" + serie + "</p>" + "<p>" + data.points[i].time + " " + data.points[i].value + "</p>"
     }
 }
 
