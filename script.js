@@ -86,6 +86,8 @@ let getDataButtonHandler = (event) => {
     event = event || window.event
     let email = event.target.parentElement.children[0].value
     console.log(email)
+    let results = document.getElementById("result")
+    results.innerHTML = ""
     getData(email, "cards")
     getData(email, "folds")
     getData(email, "devices")
