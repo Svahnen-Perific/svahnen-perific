@@ -130,7 +130,7 @@ let getDataButtonHandler = (event) => {
 
 }
 
-
+//TODO: Make the labels show up on the graph
 // Define the label and value arrays
 const labels = ['Apples', 'Oranges', 'Bananas'];
 const values = [10, 20, 30];
