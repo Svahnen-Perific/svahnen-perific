@@ -20,12 +20,6 @@ let folds = []
 let devicesDate = []
 let devices = []
 
-let drawGraph = () => {
-    console.log("drawGraph")
-
-
-}
-
 let returnDataCounter = 0
 let returnData = (data, serie) => {
     returnDataCounter++
@@ -33,14 +27,26 @@ let returnData = (data, serie) => {
 
     for (let i = 0; i < data.points.length; i++) {
         if (serie == "cards") {
-            cards += data.points[i].value
-            cardsDate += data.points[i].time
+            //cards += data.points[i].value
+            //cardsDate += data.points[i].time
+            //cards.push(Math.abs(data.points[i].value))
+            cards.push(data.points[i].value)
+            //cardsDate.push(data.points[i].time)
+            //cardsDate.push(data.points[i].time.split("T")[0])
+            cardsDate.push(data.points[i].time.split("T")[0])
+            //Cut the time out of the date
+            //cardsDate.push(data.points[i].time.split("T"))
+            //console.log(data.points[i].time.split("T")[0])
         } else if (serie == "folds") {
-            folds += data.points[i].value
-            foldsDate += data.points[i].time
+            //folds += data.points[i].value
+            //foldsDate += data.points[i].time
+            folds.push(data.points[i].value)
+            foldsDate.push(data.points[i].time.split("T")[0])
         } else if (serie == "devices") {
-            devices += data.points[i].value
-            devicesDate += data.points[i].time
+            //devices += data.points[i].value
+            //devicesDate += data.points[i].time
+            devices.push(data.points[i].value)
+            devicesDate.push(data.points[i].time.split("T")[0])
         }
 
         console.log(data.points[i].time, data.points[i].value)
@@ -131,37 +137,55 @@ let getDataButtonHandler = (event) => {
 }
 
 //TODO: Make the labels show up on the graph
-// Define the label and value arrays
-const labels = ['Apples', 'Oranges', 'Bananas'];
-const values = [10, 20, 30];
 
-// Create the bar chart using D3
-const svg = d3.select('body')
-    .append('svg')
-    .attr('width', 400)
-    .attr('height', 200);
+let drawGraph = () => {
 
-const xScale = d3.scaleLinear().domain([0, 2]).rangeRound([0, 400]);
 
-const yScale = d3.scaleLinear().domain([0, 30]).rangeRound([0, 200]);
+    let card_trace = {
+        x: cardsDate,
+        y: cards,
+        name: 'Cards',
+        type: 'bar',
+        transforms: [{
+            type: 'aggregate',
+            groups: cardsDate,
+            aggregations: [
+                { target: 'y', func: 'sum', enabled: true },
+            ]
+        }]
+    };
 
-const bars = svg.selectAll('.bar')
-    .data(values)
-    .enter()
-    .append('rect')
-    .attr('class', 'bar')
-    .attr('x', (d, i) => xScale(i))
-    .attr('y', d => 200 - yScale(d))
-    .attr('width', 50)
-    .attr('height', 50)
-// show labels
-svg.selectAll('text')
-    .data(values)
-    .enter()
-    .append('text')
-    .text(d => d)
-    .attr('x', (d, i) => xScale(i) + 10)
-    .attr('y', d => 200 - yScale(d) - 10)
-    .attr('font-size', '20px')
-    .attr('fill', 'black');
+    let fold_trace = {
+        x: foldsDate,
+        y: folds,
+        name: 'Folds',
+        type: 'bar',
+        transforms: [{
+            type: 'aggregate',
+            groups: foldsDate,
+            aggregations: [
+                { target: 'y', func: 'sum', enabled: true },
+            ]
+        }]
+    };
 
+    let device_trace = {
+        x: devicesDate,
+        y: devices,
+        name: 'Devices',
+        type: 'bar',
+        transforms: [{
+            type: 'aggregate',
+            groups: devicesDate,
+            aggregations: [
+                { target: 'y', func: 'sum', enabled: true },
+            ]
+        }]
+    };
+
+    let data = [card_trace, fold_trace, device_trace];
+
+    let layout = { barmode: 'group' };
+
+    Plotly.newPlot('result', data, layout);
+}
