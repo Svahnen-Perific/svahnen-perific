@@ -1,0 +1,15 @@
+.card_responsive_media {
+    width: 54rem;
+}
+
+@media only screen and (max-width: 54rem) {
+    .card_responsive_media {
+        width: 36rem;
+    }
+}
+
+@media only screen and (max-width: 36rem) {
+    .card_responsive_media {
+        width: 18rem;
+    }
+}
