@@ -1,5 +1,9 @@
-
-
+let cards = { date: [], value: [] }
+let folds = { date: [], value: [] }
+let em1 = { date: [], value: [] }
+let one = { date: [], value: [] }
+let label = { date: [], value: [] }
+let sent = { date: [], value: [] }
 
 let getData = (email, serie) => {
     let savedData = "test"
@@ -11,14 +15,14 @@ let getData = (email, serie) => {
 
     console.log("https://pushdata.io/" + email + "/" + serie)
 }
-
-
-let cardsDate = []
-let cards = []
-let foldsDate = []
-let folds = []
-let devicesDate = []
-let devices = []
+let resetData = () => {
+    cards = { date: [], value: [] }
+    folds = { date: [], value: [] }
+    em1 = { date: [], value: [] }
+    one = { date: [], value: [] }
+    label = { date: [], value: [] }
+    sent = { date: [], value: [] }
+}
 
 let returnDataCounter = 0
 let returnData = (data, serie) => {
@@ -27,31 +31,28 @@ let returnData = (data, serie) => {
 
     for (let i = 0; i < data.points.length; i++) {
         if (serie == "cards") {
-            //cards += data.points[i].value
-            //cardsDate += data.points[i].time
-            //cards.push(Math.abs(data.points[i].value))
-            cards.push(data.points[i].value)
-            //cardsDate.push(data.points[i].time)
-            //cardsDate.push(data.points[i].time.split("T")[0])
-            cardsDate.push(data.points[i].time.split("T")[0])
-            //Cut the time out of the date
-            //cardsDate.push(data.points[i].time.split("T"))
-            //console.log(data.points[i].time.split("T")[0])
+            cards.value.push(data.points[i].value)
+            cards.date.push(data.points[i].time.split("T")[0])
         } else if (serie == "folds") {
-            //folds += data.points[i].value
-            //foldsDate += data.points[i].time
-            folds.push(data.points[i].value)
-            foldsDate.push(data.points[i].time.split("T")[0])
-        } else if (serie == "devices") {
-            //devices += data.points[i].value
-            //devicesDate += data.points[i].time
-            devices.push(data.points[i].value)
-            devicesDate.push(data.points[i].time.split("T")[0])
-        }
 
+            folds.value.push(data.points[i].value)
+            folds.date.push(data.points[i].time.split("T")[0])
+        } else if (serie == "em1") {
+            em1.value.push(data.points[i].value)
+            em1.date.push(data.points[i].time.split("T")[0])
+        } else if (serie == "one") {
+            one.value.push(data.points[i].value)
+            one.date.push(data.points[i].time.split("T")[0])
+        } else if (serie == "label") {
+            label.value.push(data.points[i].value)
+            label.date.push(data.points[i].time.split("T")[0])
+        } else if (serie == "sent") {
+            sent.value.push(data.points[i].value)
+            sent.date.push(data.points[i].time.split("T")[0])
+        }
         console.log(data.points[i].time, data.points[i].value)
     }
-    if (returnDataCounter == 3) {
+    if (returnDataCounter == 6) {
         drawGraph()
     }
 }
@@ -106,25 +107,24 @@ let report = (event) => {
     event = event || window.event
     let cards = event.target.parentElement.parentElement.children[1].children[0].children[1].children[0].value
     let folds = event.target.parentElement.parentElement.children[1].children[1].children[1].children[0].value
-    let devices = event.target.parentElement.parentElement.children[1].children[2].children[1].children[0].value
+    let em1 = event.target.parentElement.parentElement.children[1].children[2].children[1].children[0].value
+    let one = event.target.parentElement.parentElement.children[1].children[3].children[1].children[0].value
+    let label = event.target.parentElement.parentElement.children[1].children[4].children[1].children[0].value
+    let sent = event.target.parentElement.parentElement.children[1].children[5].children[1].children[0].value
     let email = event.target.parentElement.parentElement.children[0].value
 
-    console.log(cards, folds, devices, email)
+    console.log(cards, folds, em1, one, label, sent, email)
 
     postData(email, "cards", cards)
     postData(email, "folds", folds)
-    postData(email, "devices", devices)
-
+    postData(email, "em1", em1)
+    postData(email, "one", one)
+    postData(email, "label", label)
+    postData(email, "sent", sent)
 }
 
 let getDataButtonHandler = (event) => {
     returnDataCounter = 0
-    cardsDate = []
-    cards = []
-    foldsDate = []
-    folds = []
-    devicesDate = []
-    devices = []
     event = event || window.event
     let email = event.target.parentElement.children[0].value
     console.log(email)
@@ -132,23 +132,23 @@ let getDataButtonHandler = (event) => {
     results.innerHTML = ""
     getData(email, "cards")
     getData(email, "folds")
-    getData(email, "devices")
-
+    getData(email, "em1")
+    getData(email, "one")
+    getData(email, "label")
+    getData(email, "sent")
 }
-
-//TODO: Make the labels show up on the graph
 
 let drawGraph = () => {
 
 
     let card_trace = {
-        x: cardsDate,
-        y: cards,
+        x: cards.date,
+        y: cards.value,
         name: 'Cards',
         type: 'bar',
         transforms: [{
             type: 'aggregate',
-            groups: cardsDate,
+            groups: cards.date,
             aggregations: [
                 { target: 'y', func: 'sum', enabled: true },
             ]
@@ -156,34 +156,73 @@ let drawGraph = () => {
     };
 
     let fold_trace = {
-        x: foldsDate,
-        y: folds,
+        x: folds.date,
+        y: folds.value,
         name: 'Folds',
         type: 'bar',
         transforms: [{
             type: 'aggregate',
-            groups: foldsDate,
+            groups: folds.date,
             aggregations: [
                 { target: 'y', func: 'sum', enabled: true },
             ]
         }]
     };
 
-    let device_trace = {
-        x: devicesDate,
-        y: devices,
-        name: 'Devices',
+    let em1_trace = {
+        x: em1.date,
+        y: em1.value,
+        name: 'EM1',
         type: 'bar',
         transforms: [{
             type: 'aggregate',
-            groups: devicesDate,
+            groups: em1.date,
+            aggregations: [
+                { target: 'y', func: 'sum', enabled: true },
+            ]
+        }]
+    };
+    let one_trace = {
+        x: one.date,
+        y: one.value,
+        name: 'One',
+        type: 'bar',
+        transforms: [{
+            type: 'aggregate',
+            groups: one.date,
+            aggregations: [
+                { target: 'y', func: 'sum', enabled: true },
+            ]
+        }]
+    };
+    let label_trace = {
+        x: label.date,
+        y: label.value,
+        name: 'Label',
+        type: 'bar',
+        transforms: [{
+            type: 'aggregate',
+            groups: label.date,
+            aggregations: [
+                { target: 'y', func: 'sum', enabled: true },
+            ]
+        }]
+    };
+    let sent_trace = {
+        x: sent.date,
+        y: sent.value,
+        name: 'Sent',
+        type: 'bar',
+        transforms: [{
+            type: 'aggregate',
+            groups: sent.date,
             aggregations: [
                 { target: 'y', func: 'sum', enabled: true },
             ]
         }]
     };
 
-    let data = [card_trace, fold_trace, device_trace];
+    let data = [card_trace, fold_trace, em1_trace, one_trace, label_trace, sent_trace];
 
     let layout = { barmode: 'group' };
 
