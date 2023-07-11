@@ -5,7 +5,7 @@ let one = { date: [], value: [] }
 let label = { date: [], value: [] }
 let sent = { date: [], value: [] }
 
-let listOfEmails = ["oscar.forslund@perific.com", "zara.paktinat@perific.com", "yasir.ali@perific.com"]
+let listOfEmails = ["info@perific.com", "oscar.forslund@perific.com", "zara.paktinat@perific.com", "yasir.ali@perific.com"]
 
 let getData = (email, serie) => {
     let savedData
@@ -244,6 +244,7 @@ let drawGraph = () => {
     Plotly.newPlot('result', data, layout);
 }
 
+addRow()
 addRow()
 addRow()
 addRow()
