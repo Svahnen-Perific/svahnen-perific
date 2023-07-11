@@ -5,8 +5,10 @@ let one = { date: [], value: [] }
 let label = { date: [], value: [] }
 let sent = { date: [], value: [] }
 
+let listOfEmails = ["oscar.forslund@perific.com", "zara.paktinat@perific.com", "yasir.ali@perific.com"]
+
 let getData = (email, serie) => {
-    let savedData = "test"
+    let savedData
     // fetch and save data in savedData
     fetch("https://pushdata.io/" + email + "/" + serie)
         .then(res => res.json())
@@ -79,8 +81,20 @@ let postData = (email, serie, value) => {
 
 let addRow = () => {
     let main = document.getElementsByTagName("main")[0]
-    let innerHTML = document.getElementsByClassName("report_form")[0].innerHTML
-    main.appendChild(document.createElement("div")).innerHTML = innerHTML
+
+    let form = document.getElementsByClassName("report_form")[0]
+
+    main.appendChild(document.createElement("div")).innerHTML = form.innerHTML
+
+
+    let email
+
+    if (email = listOfEmails.pop()) {
+        document.getElementsByTagName("main")[0].lastChild.children[0].value = email
+    } else {
+        document.getElementsByTagName("main")[0].lastChild.children[0].value = ""
+    }
+
 }
 
 let changeValue = (event) => {
@@ -114,6 +128,7 @@ let report = (event) => {
     let email = event.target.parentElement.parentElement.children[0].value
 
     console.log(cards, folds, em1, one, label, sent, email)
+
 
     postData(email, "cards", cards)
     postData(email, "folds", folds)
@@ -228,3 +243,7 @@ let drawGraph = () => {
 
     Plotly.newPlot('result', data, layout);
 }
+
+addRow()
+addRow()
+addRow()
